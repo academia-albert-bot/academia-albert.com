@@ -6,3 +6,31 @@ const supabase = supabase.createClient(
 
 // Teste de carregamento
 console.log("Supabase conectado com sucesso!");
+// Cadastro de novo usuário
+async function signUp(email, password, name) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    console.error("Erro ao criar conta:", error.message);
+    return;
+  }
+
+  // Criar perfil no Supabase
+  const newProfile = {
+    id: data.user.id,
+    name: name || email.split('@')[0],
+    email,
+    role: 'STUDENT',
+    enrollments: []
+  };
+
+  const { error: profileError } = await supabase.from('profiles').insert(newProfile);
+  if (profileError) {
+    console.error("Erro ao criar perfil:", profileError.message);
+  } else {
+    console.log("Conta criada com sucesso!");
+  }
+}
