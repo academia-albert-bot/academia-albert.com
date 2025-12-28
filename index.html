@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <title>Academia Albert</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1e3a8a">
+<meta charset="UTF-8">
+<title>Academia Albert</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
 
-  <link rel="stylesheet" href="style.css">
+<style>
+body{margin:0;font-family:Arial;background:#020617;color:white}
+header{background:#020617;padding:20px;text-align:center}
+.hero{background:url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1500&q=80') center/cover;height:90vh;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero h1{font-size:48px}
+.btn{background:#2563eb;padding:15px 30px;border-radius:8px;color:white;text-decoration:none;font-weight:bold}
+section{padding:50px}
+.card{background:#0f172a;padding:20px;border-radius:12px;margin-bottom:20px}
+footer{text-align:center;padding:30px;background:#020617;color:#aaa}
+</style>
 </head>
+
 <body>
 
-<header class="top">
-  <h1>Academia Albert</h1>
-  <nav>
-    <a href="#cursos">Cursos</a>
-    <a href="#login">Entrar</a>
-    <a href="#admin">Admin</a>
-  </nav>
+<header>
+<h2>ACADEMIA ALBERT</h2>
 </header>
 
-<section class="hero">
-  <h2>Formação profissional em Moçambique</h2>
-  <p>Aprenda. Cresça. Ganhe dinheiro.</p>
+<div class="hero">
+<div>
+<h1>Transforme seu futuro hoje</h1>
+<p>Plataforma profissional de cursos em Moçambique</p><br>
+<a href="#cursos" class="btn">Ver Cursos</a>
+</div>
+</div>
+
+<section id="cursos">
+<h2>Nossos Cursos</h2>
+
+<div class="card">Administração Pública</div>
+<div class="card">Saboaria Profissional</div>
+<div class="card">Marketing Digital</div>
+<div class="card">Inglês Profissional</div>
 </section>
 
-<section id="cursos" class="grid"></section>
+<footer>
+Academia Albert © 2025 — Moçambique
+</footer>
 
-<section id="login" class="box">
-  <h3>Entrar</h3>
-  <input id="email" placeholder="Email">
-  <input id="senha" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
-</section>
-
-<section id="admin" class="box hidden">
-  <h3>Painel do Diretor</h3>
-  <button onclick="novoCurso()">Adicionar Curso</button>
-  <div id="adminCursos"></div>
-</section>
-
-<script src="app.js"></script>
 </body>
 </html>
