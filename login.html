@@ -1,11 +1,26 @@
-<h2>Login</h2>
-<input type="email" id="loginEmail" placeholder="Email">
-<input type="password" id="loginPassword" placeholder="Senha">
-<button id="loginBtn">Entrar</button>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Academia Albert</title>
+  <script type="module" src="../js/auth.js"></script>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="login-form">
+    <input type="email" id="login-email" placeholder="Email" required />
+    <input type="password" id="login-password" placeholder="Senha" required />
+    <button type="submit">Entrar</button>
+  </form>
 
-<h2>Cadastro</h2>
-<input type="text" id="signUpName" placeholder="Nome">
-<input type="email" id="signUpEmail" placeholder="Email">
-<input type="password" id="signUpPassword" placeholder="Senha">
-<button id="signUpBtn">Cadastrar</button>
-<script type="module" src="login.js"></script>
+  <h1>Cadastro</h1>
+  <form id="signup-form">
+    <input type="text" id="signup-name" placeholder="Nome" required />
+    <input type="email" id="signup-email" placeholder="Email" required />
+    <input type="password" id="signup-password" placeholder="Senha" required />
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <div id="message"></div>
+</body>
+</html>
