@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Academia Albert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e3a8a">
 
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <h1>Academia Albert</h1>
+  <nav>
+    <a href="#cursos">Cursos</a>
+    <a href="#login">Entrar</a>
+    <a href="#admin">Admin</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Formação profissional em Moçambique</h2>
+  <p>Aprenda. Cresça. Ganhe dinheiro.</p>
+</section>
+
+<section id="cursos" class="grid"></section>
+
+<section id="login" class="box">
+  <h3>Entrar</h3>
+  <input id="email" placeholder="Email">
+  <input id="senha" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+</section>
+
+<section id="admin" class="box hidden">
+  <h3>Painel do Diretor</h3>
+  <button onclick="novoCurso()">Adicionar Curso</button>
+  <div id="adminCursos"></div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
