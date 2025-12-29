@@ -25,7 +25,7 @@
 <!-- Supabase JS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script>
-  // Dados do Supabase
+  // Substitua pelos seus dados do Supabase
   const supabaseUrl = "https://efdwiddcentpanszhnqg.supabase.co";
   const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZHdpZGRjZW50cGFuc3pobnFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NjM0NzcsImV4cCI6MjA4MjIzOTQ3N30.2wNC4BCmaX_j27wVMgqwfB97pykz30oOQeY2SkZCaQQ";
   const supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -48,11 +48,17 @@
       return;
     }
 
+    const user = authData.user;
+    if (!user) {
+      msg.innerText = "Erro: usuário não encontrado!";
+      return;
+    }
+
     // Buscar perfil do usuário
     const { data: profile, error: profileError } = await supabase
       .from("Profiles")
       .select("*")
-      .eq("id", authData.user.id)
+      .eq("id", user.id)
       .single();
 
     if (profileError || !profile) {
