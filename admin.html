@@ -1,8 +1,59 @@
 <!DOCTYPE html>
-<html>
-<head><title>Painel Director</title></head>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Painel Admin – Academia Albert</title>
+<style>
+body {font-family: Arial, sans-serif; background: #0d1117; color: white; text-align: center; padding: 40px;}
+input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
+.card {background: #161b22; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto;}
+button:hover {cursor: pointer; transform: scale(1.05); transition: 0.2s;}
+#msg {margin-top: 10px; font-weight: bold;}
+</style>
+</head>
 <body>
-<h1>🎓 Painel do Director</h1>
-<p>Bem-vindo ao controlo total da plataforma.</p>
+
+<h1>Painel Administrativo</h1>
+
+<div class="card">
+  <h3>Adicionar Curso</h3>
+  <input id="nome" placeholder="Nome do curso"><br>
+  <input id="preco" placeholder="Preço" type="number"><br>
+  <button onclick="addCurso()">Adicionar</button>
+  <p id="msg"></p>
+</div>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script>
+  // Substitua abaixo pelas suas chaves reais
+  const supabaseUrl = "https://efdwiddcentpanszhnqg.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZHdpZGRjZW50cGFuc3pobnFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NjM0NzcsImV4cCI6MjA4MjIzOTQ3N30.2wNC4BCmaX_j27wVMgqwfB97pykz30oOQeY2SkZCaQQ";
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  async function addCurso() {
+    const nome = document.getElementById("nome").value.trim();
+    const preco = parseFloat(document.getElementById("preco").value);
+
+    if (!nome || isNaN(preco)) {
+      document.getElementById("msg").innerText = "Preencha os campos corretamente!";
+      return;
+    }
+
+    const { data, error } = await supabase.from("Courses").insert([{ 
+      title: nome, 
+      price: preco 
+    }]);
+
+    if (error) {
+      document.getElementById("msg").innerText = "Erro ao adicionar curso: " + error.message;
+    } else {
+      document.getElementById("msg").innerText = "Curso adicionado com sucesso!";
+      document.getElementById("nome").value = "";
+      document.getElementById("preco").value = "";
+    }
+  }
+</script>
+
 </body>
 </html>
