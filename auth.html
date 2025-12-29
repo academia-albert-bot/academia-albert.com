@@ -4,30 +4,10 @@
 <meta charset="UTF-8">
 <title>Login – Academia Albert</title>
 <style>
-body {
-    font-family: Arial;
-    background: #0d1117;
-    color: white;
-    text-align: center;
-    padding: 40px;
-}
-input, button {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 6px;
-    border: none;
-}
-.card {
-    background: #161b22;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    margin: auto;
-}
-a {
-    color: #1e90ff;
-    text-decoration: none;
-}
+  body {font-family: Arial; background: #0d1117; color: white; text-align: center; padding: 40px;}
+  input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
+  .card {background: #161b22; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto;}
+  a {color: #1e90ff; text-decoration: none;}
 </style>
 </head>
 <body>
@@ -42,50 +22,56 @@ a {
   <p>Não tem conta? <a href="register.html">Cadastrar-se</a></p>
 </div>
 
+<!-- Supabase JS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script>
-// Substitua pelas suas chaves do Supabase
-const supabaseUrl = "https://efdwiddcentpanszhnqg.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZHdpZGRjZW50cGFuc3pobnFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NjM0NzcsImV4cCI6MjA4MjIzOTQ3N30.2wNC4BCmaX_j27wVMgqwfB97pykz30oOQeY2SkZCaQQ";
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  // Dados do Supabase
+  const supabaseUrl = "https://efdwiddcentpanszhnqg.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZHdpZGRjZW50cGFuc3pobnFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NjM0NzcsImV4cCI6MjA4MjIzOTQ3N30.2wNC4BCmaX_j27wVMgqwfB97pykz30oOQeY2SkZCaQQ";
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  async function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const msg = document.getElementById("msg");
+    msg.innerText = "";
 
     if (!email || !password) {
-        document.getElementById("msg").innerText = "Por favor, preencha todos os campos.";
-        return;
+      msg.innerText = "Preencha email e senha!";
+      return;
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-        document.getElementById("msg").innerText = "Erro: " + error.message;
-    } else if (data.user) {
-        // Buscar perfil do usuário
-        const { data: profile, error: profileError } = await supabase
-            .from("Profiles")
-            .select("*")
-            .eq("id", data.user.id)
-            .single();
-
-        if (profileError) {
-            document.getElementById("msg").innerText = "Erro ao carregar perfil.";
-            return;
-        }
-
-        document.getElementById("msg").innerText = "Login efetuado! Redirecionando...";
-
-        setTimeout(() => {
-            if (profile.role === "admin") {
-                window.location.href = "admin.html";
-            } else {
-                window.location.href = "dashboard.html";
-            }
-        }, 1500);
+    // Login no Supabase
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    if (authError) {
+      msg.innerText = "Erro no login: " + authError.message;
+      return;
     }
-}
+
+    // Buscar perfil do usuário
+    const { data: profile, error: profileError } = await supabase
+      .from("Profiles")
+      .select("*")
+      .eq("id", authData.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      msg.innerText = "Perfil não encontrado!";
+      console.error(profileError);
+      return;
+    }
+
+    msg.innerText = "Login efetuado! Redirecionando...";
+
+    // Redirecionamento com base no role
+    setTimeout(() => {
+      if (profile.role.toLowerCase() === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "dashboard.html";
+      }
+    }, 1200);
+  }
 </script>
 
 </body>
