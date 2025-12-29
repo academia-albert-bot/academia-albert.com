@@ -1,41 +1,58 @@
 <!DOCTYPE html>
-<html lang="pt-MZ">
+<html<!DOCTYPE html>
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Academia Albert - Login/Cadastro</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css">
+<meta charset="UTF-8">
+<title>Login – Academia Albert</title>
+<style>
+body {font-family: Arial; background: #0d1117; color: white; text-align: center; padding: 40px;}
+input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
+.card {background: #161b22; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto;}
+</style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 flex items-center justify-center min-h-screen">
-  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-lg w-full max-w-md p-8">
-    
-    <h1 class="text-2xl font-bold text-center text-slate-900 dark:text-white mb-6">Bem-vindo à Academia Albert</h1>
-    
-    <!-- Formulário -->
-    <form id="authForm" class="space-y-4">
-      <div id="nameFields" class="hidden space-y-2">
-        <input type="text" id="firstName" placeholder="Nome" class="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white" />
-        <input type="text" id="lastName" placeholder="Sobrenome" class="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white" />
-      </div>
-      
-      <input type="email" id="email" placeholder="Email" required class="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white" />
-      
-      <input type="text" id="phone" placeholder="Telefone (+258 XXXX XXX XXX)" class="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white" />
-      
-      <input type="password" id="password" placeholder="Senha" required class="w-full px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white" />
-      
-      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-bold transition">Entrar</button>
-    </form>
+<body>
 
-    <p class="text-center text-slate-500 mt-4">
-      <span id="toggleForm" class="cursor-pointer text-indigo-600 hover:underline">Não tem conta? Cadastre-se</span>
-    </p>
+<h1>Login – Academia Albert</h1>
 
-    <div class="mt-6 flex flex-col gap-2">
-      <button id="googleAuth" class="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2 rounded-xl font-bold">Login com Google</button>
-      <button id="facebookAuth" class="w-full flex items-center justify-center gap-2 bg-blue-700 text-white py-2 rounded-xl font-bold">Login com Facebook</button>
-      <button id="telegramAuth" class="w-full flex items-center justify-center gap-2 bg-cyan-600 text-white py-2 rounded-xl font-bold">Login com Telegram</button>
-    </div>
+<div class="card">
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Senha"><br>
+  <button onclick="login()">Entrar</button>
+  <p id="msg"></p>
+  <p>Não tem conta? <a href="register.html" style="color:#1e90ff;">Cadastrar-se</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script>
+const supabaseUrl = "COLE_AQUI_TUA_URL_SUPABASE";
+const supabaseKey = "COLE_AQUI_TUA_PUBLIC_KEY";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+        document.getElementById("msg").innerText = "Erro: " + error.message;
+    } else {
+        // Buscar perfil do usuário
+        const { data: profile } = await supabase.from("Profiles").select("*").eq("id", data.user.id).single();
+        document.getElementById("msg").innerText = "Login efetuado! Redirecionando...";
+
+        setTimeout(() => {
+            if (profile.role === "admin") {
+                window.location.href = "admin.html"; // Admin
+            } else {
+                window.location.href = "dashboard.html"; // Estudante
+            }
+        }, 1500);
+    }
+}
+</script>
+</body>
+</html>
 
   </div>
 
