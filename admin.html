@@ -1,41 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt">
-<head>
-<meta charset="UTF-8">
-<title>Painel Admin – Academia Albert</title>
-<style>
-body {font-family:Arial;background:#0d1117;color:white;text-align:center;padding:40px}
-input,button{padding:10px;margin:5px;border-radius:6px;border:none}
-.card{background:#161b22;padding:20px;border-radius:10px;max-width:500px;margin:auto}
-</style>
-</head>
+<html>
+<head><title>Painel Director</title></head>
 <body>
-
-<h1>Painel Administrativo</h1>
-
-<div class="card">
-<h3>Adicionar Curso</h3>
-<input id="nome" placeholder="Nome do curso"><br>
-<input id="preco" placeholder="Preço"><br>
-<button onclick="addCurso()">Adicionar</button>
-<p id="msg"></p>
-</div>
-
-<script>
-const supabase = supabase.createClient(
-  "COLE_AQUI_TUA_URL_SUPABASE",
-  "COLE_AQUI_TUA_PUBLIC_KEY"
-);
-
-function addCurso(){
-  supabase.from("cursos").insert([{
-    nome: document.getElementById("nome").value,
-    preco: document.getElementById("preco").value
-  }]).then(r=>{
-    document.getElementById("msg").innerText = "Curso adicionado!";
-  });
-}
-</script>
-
+<h1>🎓 Painel do Director</h1>
+<p>Bem-vindo ao controlo total da plataforma.</p>
 </body>
 </html>
