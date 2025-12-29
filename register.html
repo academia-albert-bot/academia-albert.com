@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro – Academia Albert</title>
+<style>
+body {font-family: Arial; background: #0d1117; color: white; text-align: center; padding: 40px;}
+input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
+.card {background: #161b22; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto;}
+</style>
+</head>
+<body>
+
+<h1>Cadastro – Academia Albert</h1>
+
+<div class="card">
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Senha"><br>
+  <input id="name" placeholder="Nome"><br>
+  <button onclick="register()">Cadastrar</button>
+  <p id="msg"></p>
+  <p>Já tem conta? <a href="login.html" style="color:#1e90ff;">Entrar</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script>
+const supabaseUrl = "COLE_AQUI_TUA_URL_SUPABASE";
+const supabaseKey = "COLE_AQUI_TUA_PUBLIC_KEY";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const ADMIN_EMAIL = "academiaalbert11@gmail.com"; // Email de admin
+
+async function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const name = document.getElementById("name").value;
+
+    const { data, error } = await supabase.auth.signUp({ email, password });
+
+    if (error) {
+        document.getElementById("msg").innerText = "Erro: " + error.message;
+    } else {
+        // Criar perfil
+        const role = email === ADMIN_EMAIL ? "admin" : "student";
+        await supabase.from("Profiles").insert([{
+            id: data.user.id,
+            email,
+            name,
+            role,
+            enrollments: []
+        }]);
+
+        document.getElementById("msg").innerText = "Conta criada com sucesso! Redirecionando...";
+        setTimeout(() => {
+            if (role === "admin") {
+                window.location.href = "admin.html";
+            } else {
+                window.location.href = "dashboard.html";
+            }
+        }, 1500);
+    }
+}
+</script>
+</body>
+</html>
