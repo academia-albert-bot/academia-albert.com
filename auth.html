@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<html<!DOCTYPE html>
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
 <title>Login – Academia Albert</title>
 <style>
-body {font-family: Arial; background: #0d1117; color: white; text-align: center; padding: 40px;}
-input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
-.card {background: #161b22; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto;}
+body {
+    font-family: Arial;
+    background: #0d1117;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 6px;
+    border: none;
+}
+.card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+}
+a {
+    color: #1e90ff;
+    text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -19,43 +39,54 @@ input, button {padding: 10px; margin: 5px; border-radius: 6px; border: none;}
   <input id="password" type="password" placeholder="Senha"><br>
   <button onclick="login()">Entrar</button>
   <p id="msg"></p>
-  <p>Não tem conta? <a href="register.html" style="color:#1e90ff;">Cadastrar-se</a></p>
+  <p>Não tem conta? <a href="register.html">Cadastrar-se</a></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script>
-const supabaseUrl = "COLE_AQUI_TUA_URL_SUPABASE";
-const supabaseKey = "COLE_AQUI_TUA_PUBLIC_KEY";
+// Substitua pelas suas chaves do Supabase
+const supabaseUrl = "https://efdwiddcentpanszhnqg.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZHdpZGRjZW50cGFuc3pobnFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NjM0NzcsImV4cCI6MjA4MjIzOTQ3N30.2wNC4BCmaX_j27wVMgqwfB97pykz30oOQeY2SkZCaQQ";
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 async function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
+    if (!email || !password) {
+        document.getElementById("msg").innerText = "Por favor, preencha todos os campos.";
+        return;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
         document.getElementById("msg").innerText = "Erro: " + error.message;
-    } else {
+    } else if (data.user) {
         // Buscar perfil do usuário
-        const { data: profile } = await supabase.from("Profiles").select("*").eq("id", data.user.id).single();
+        const { data: profile, error: profileError } = await supabase
+            .from("Profiles")
+            .select("*")
+            .eq("id", data.user.id)
+            .single();
+
+        if (profileError) {
+            document.getElementById("msg").innerText = "Erro ao carregar perfil.";
+            return;
+        }
+
         document.getElementById("msg").innerText = "Login efetuado! Redirecionando...";
 
         setTimeout(() => {
             if (profile.role === "admin") {
-                window.location.href = "admin.html"; // Admin
+                window.location.href = "admin.html";
             } else {
-                window.location.href = "dashboard.html"; // Estudante
+                window.location.href = "dashboard.html";
             }
         }, 1500);
     }
 }
 </script>
-</body>
-</html>
 
-  </div>
-
-  <script src="auth.js"></script>
 </body>
 </html>
